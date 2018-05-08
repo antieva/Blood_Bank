@@ -67,7 +67,7 @@ namespace BloodBank.Models
       }
       public string GetBloodType()
       {
-        return _dateOfBirth;
+        return _bloodType;
       }
       public string GetDiagnosis()
       {
@@ -81,10 +81,39 @@ namespace BloodBank.Models
       {
         return _needBlood;
       }
-      public int GetId)
+      public int GetId()
       {
         return _id;
       }
+      public void SetName(string newName)
+      {
+        _name = newName;
+      }
+      public void SetContact(string newContact)
+      {
+        _contact = newContact;
+      }
+      public void SetDateOfBirth(string newDateOfBirth)
+      {
+        _dateOfBirth = newDateOfBirth;
+      }
+      public void SetBloodType(string newBloodType)
+      {
+        _bloodType = newBloodType;
+      }
+      public void SetDiagnosis(string newDiagnosis)
+      {
+        _diagnosis = newDiagnosis;
+      }
+      public void SetUrgent(bool maybeUrgent)
+      {
+        _urgent = newUrgent;
+      }
+      public void SetNeedBlood(bool maybeNeedBlood)
+      {
+        _needBlood = newNeedBlood;
+      }
+
 
 
     }

@@ -47,5 +47,49 @@ namespace BloodBank.Models
       {
            return this.GetName().GetHashCode();
       }
+      public string GetName()
+      {
+        return _name;
+      }
+      public string GetContact()
+      {
+        return _contact;
+      }
+      public string GetDateOfBirth()
+      {
+        return _dateOfBirth;
+      }
+      public string GetBloodType()
+      {
+        return _bloodType;
+      }
+      public string GetMedicalRecord()
+      {
+        return _medicalRecord;
+      }
+      public int GetId()
+      {
+        return _id;
+      }
+      public void SetName(string newName)
+      {
+        _name = newName;
+      }
+      public void SetContact(string newContact)
+      {
+        _contact = newContact;
+      }
+      public void SetDateOfBirth(string newDateOfBirth)
+      {
+        _dateOfBirth = newDateOfBirth;
+      }
+      public void SetBloodType(string newBloodType)
+      {
+        _bloodType = newBloodType;
+      }
+      public void SetMedicalRecord(string newMedicalRecord)
+      {
+        _medicalRecord = newMedicalRecord;
+      }
     }
 }
