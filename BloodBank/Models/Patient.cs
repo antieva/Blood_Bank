@@ -113,6 +113,35 @@ namespace BloodBank.Models
       {
         _needBlood = newNeedBlood;
       }
+      //FIX TOMORROW, TUESDAY 
+      public void Save()
+      {
+          MySqlConnection conn = DB.Connection();
+          conn.Open();
+
+          var cmd = conn.CreateCommand() as MySqlCommand;
+          cmd.CommandText = @"INSERT INTO patients (description, due_date) VALUES (@description, @dueDate);";
+
+          MySqlParameter description = new MySqlParameter();
+          description.ParameterName = "@description";
+          description.Value = this._description;
+          cmd.Parameters.Add(description);
+
+          MySqlParameter dueDate = new MySqlParameter();
+          dueDate.ParameterName = "@dueDate";
+          dueDate.Value = this._dueDate;
+          cmd.Parameters.Add(dueDate);
+
+          // Code to declare, set, and add values to a categoryId SQL parameters has also been removed.
+
+          cmd.ExecuteNonQuery();
+          _id = (int) cmd.LastInsertedId;
+          conn.Close();
+          if (conn != null)
+          {
+              conn.Dispose();
+          }
+        }
 
 
 
