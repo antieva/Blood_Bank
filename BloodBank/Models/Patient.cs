@@ -13,9 +13,10 @@ namespace BloodBank.Models
       private string _bloodType;
       private string _diagnosis;
       private bool _urgent;
+      private bool _needBlood;
       private int _id;
 
-      public Patient(string name, string contact, string dateOfBirth, string bloodType, string diagnosis, bool urgent = true, int id = 0)
+      public Patient(string name, string contact, string dateOfBirth, string bloodType, string diagnosis, bool urgent = true, bool needBlood = true, int id = 0)
       {
         _name = name;
         _contact = contact;
@@ -23,6 +24,7 @@ namespace BloodBank.Models
         _bloodType = bloodType;
         _diagnosis = diagnosis;
         _urgent = urgent;
+        _needBlood = needBlood;
         _id = id;
       }
 
@@ -42,8 +44,9 @@ namespace BloodBank.Models
              bool bloodTypeEquality = this.GetBloodType() == newPatient.GetBloodType();
              bool diagnosisEquality = this.GetDiagnosis() == newPatient.GetDiagnosis();
              bool urgentEquality = this.GetUrgent() == newPatient.GetUrgent();
+             bool needBloodEquality = this.GetNeedBlood() == newPatient.GetNeedBlood();
 
-             return (idEquality && nameEquality && contactEquality && dateOfBirthEquality && bloodTypeEquality && diagnosisEquality && urgentEquality);
+             return (idEquality && nameEquality && contactEquality && dateOfBirthEquality && bloodTypeEquality && diagnosisEquality && urgentEquality && needBloodEquality);
            }
         }
     }
