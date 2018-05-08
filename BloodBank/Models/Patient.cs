@@ -49,5 +49,43 @@ namespace BloodBank.Models
              return (idEquality && nameEquality && contactEquality && dateOfBirthEquality && bloodTypeEquality && diagnosisEquality && urgentEquality && needBloodEquality);
            }
         }
+      public override int GetHashCode()
+      {
+           return this.GetName().GetHashCode();
+      }
+      public string GetName()
+      {
+        return _name;
+      }
+      public string GetContact()
+      {
+        return _contact;
+      }
+      public string GetDateOfBirth()
+      {
+        return _dateOfBirth;
+      }
+      public string GetBloodType()
+      {
+        return _dateOfBirth;
+      }
+      public string GetDiagnosis()
+      {
+        return _diagnosis;
+      }
+      public bool GetUrgent()
+      {
+        return _urgent;
+      }
+      public bool GetNeedBlood()
+      {
+        return _needBlood;
+      }
+      public int GetId)
+      {
+        return _id;
+      }
+
+
     }
 }

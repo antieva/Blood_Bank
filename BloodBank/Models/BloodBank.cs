@@ -38,5 +38,9 @@ namespace BloodBank.Models
              return (idEquality && nameEquality && contactEquality && addressEquality);
            }
         }
+      public override int GetHashCode()
+      {
+           return this.GetName().GetHashCode();
+      }
     }
 }

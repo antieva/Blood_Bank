@@ -43,5 +43,9 @@ namespace BloodBank.Models
              return (idEquality && nameEquality && contactEquality && dateOfBirthEquality && bloodTypeEquality && medicalRecordEquality);
            }
         }
+      public override int GetHashCode()
+      {
+           return this.GetName().GetHashCode();
+      }
     }
 }
