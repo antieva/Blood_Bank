@@ -70,5 +70,37 @@ namespace BloodBank.Models
       {
         _contact = newContact;
       }
+
+      public void Save()
+      {
+          MySqlConnection conn = DB.Connection();
+          conn.Open();
+
+          var cmd = conn.CreateCommand() as MySqlCommand;
+          cmd.CommandText = @"INSERT INTO bloodbanks (name, address, contact) VALUES (@name, @address, @contact);";
+
+          MySqlParameter name = new MySqlParameter();
+          name.ParameterName = "@name";
+          name.Value = this._name;contact
+          cmd.Parameters.Add(name);
+
+          MySqlParameter address = new MySqlParameter();
+          address.ParameterName = "@address";
+          address.Value = this._address;
+          cmd.Parameters.Add(address);
+
+          MySqlParameter contact = new MySqlParameter();
+          contact.ParameterName = "@contact";
+          contact.Value = this._contact;
+          cmd.Parameters.Add(contact);
+
+          cmd.ExecuteNonQuery();
+          _id = (int) cmd.LastInsertedId;
+          conn.Close();
+          if (conn != null)
+          {
+              conn.Dispose();
+          }
+        }
     }
 }

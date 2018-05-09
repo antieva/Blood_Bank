@@ -113,26 +113,49 @@ namespace BloodBank.Models
       {
         _needBlood = newNeedBlood;
       }
-      //FIX TOMORROW, TUESDAY 
+
       public void Save()
       {
           MySqlConnection conn = DB.Connection();
           conn.Open();
 
           var cmd = conn.CreateCommand() as MySqlCommand;
-          cmd.CommandText = @"INSERT INTO patients (description, due_date) VALUES (@description, @dueDate);";
+          cmd.CommandText = @"INSERT INTO patients (name, contact, dateOfBirth, bloodType, diagnosis, urgent, needBlood) VALUES (@name, @contact, @dateOfBirth, @bloodType, @diagnosis, @urgent, @needBlood);";
 
-          MySqlParameter description = new MySqlParameter();
-          description.ParameterName = "@description";
-          description.Value = this._description;
-          cmd.Parameters.Add(description);
+          MySqlParameter name = new MySqlParameter();
+          name.ParameterName = "@name";
+          name.Value = this._name;contact
+          cmd.Parameters.Add(name);
 
-          MySqlParameter dueDate = new MySqlParameter();
-          dueDate.ParameterName = "@dueDate";
-          dueDate.Value = this._dueDate;
-          cmd.Parameters.Add(dueDate);
+          MySqlParameter contact = new MySqlParameter();
+          contact.ParameterName = "@contact";
+          contact.Value = this._contact;
+          cmd.Parameters.Add(contact);
 
-          // Code to declare, set, and add values to a categoryId SQL parameters has also been removed.
+          MySqlParameter dateOfBirth = new MySqlParameter();
+          dateOfBirth.ParameterName = "@dateOfBirth";
+          dateOfBirth.Value = this._dateOfBirth;
+          cmd.Parameters.Add(dateOfBirth);
+
+          MySqlParameter bloodType = new MySqlParameter();
+          bloodType.ParameterName = "@bloodType";
+          bloodType.Value = this._bloodType;
+          cmd.Parameters.Add(bloodType);
+
+          MySqlParameter diagnosis = new MySqlParameter();
+          diagnosis.ParameterName = "@diagnosis";
+          diagnosis.Value = this._diagnosis;
+          cmd.Parameters.Add(diagnosis);
+
+          MySqlParameter urgent = new MySqlParameter();
+          urgent.ParameterName = "@urgent";
+          urgent.Value = this._urgent;
+          cmd.Parameters.Add(urgent);
+
+          MySqlParameter needBlood = new MySqlParameter();
+          needBlood.ParameterName = "@needBlood";
+          needBlood.Value = this._needBlood;
+          cmd.Parameters.Add(needBlood);
 
           cmd.ExecuteNonQuery();
           _id = (int) cmd.LastInsertedId;
