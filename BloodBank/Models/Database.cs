@@ -1,8 +1,8 @@
 using System;
 using MySql.Data.MySqlClient;
-using BloodBank.Models;
+using BloodBankApp.Models;
 
-namespace BloodBank.Models
+namespace BloodBankApp.Models
 {
     public class DB
     {

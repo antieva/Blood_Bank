@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
-using BloodBank.Models;
+using BloodBankApp.Models;
 using System;
 
-namespace BloodBank.Models
+namespace BloodBankApp.Models
 {
   public class Donor
   {
@@ -24,7 +24,7 @@ namespace BloodBank.Models
       _id = id;
     }
 
-    public override bool Equals(System.Object otherItem)
+    public override bool Equals(System.Object otherDonor)
     {
       if (!(otherDonor is Donor))
       {
@@ -91,7 +91,6 @@ namespace BloodBank.Models
     {
       _medicalRecord = newMedicalRecord;
     }
-
     public void Save()
     {
       MySqlConnection conn = DB.Connection();
@@ -102,7 +101,7 @@ namespace BloodBank.Models
 
       MySqlParameter name = new MySqlParameter();
       name.ParameterName = "@name";
-      name.Value = this._name;contact
+      name.Value = this._name;
       cmd.Parameters.Add(name);
 
       MySqlParameter contact = new MySqlParameter();
@@ -121,7 +120,7 @@ namespace BloodBank.Models
       cmd.Parameters.Add(bloodType);
 
       MySqlParameter medicalRecord = new MySqlParameter();
-      medicalRecord.ParameterName = "@medicalRecords";
+      medicalRecord.ParameterName = "@medicalRecord";
       medicalRecord.Value = this._medicalRecord;
       cmd.Parameters.Add(medicalRecord);
 
@@ -131,6 +130,152 @@ namespace BloodBank.Models
       if (conn != null)
       {
         conn.Dispose();
+      }
+    }
+
+    public void AddPatient(Patient newPatient)
+    {
+        MySqlConnection conn = DB.Connection();
+        conn.Open();
+        var cmd = conn.CreateCommand() as MySqlCommand;
+        cmd.CommandText = @"INSERT INTO patients_donors (donor_id, patient_id) VALUES (@DonorId, @PatientId);";
+
+        MySqlParameter donor_id = new MySqlParameter();
+        donor_id.ParameterName = "@DonorId";
+        donor_id.Value = _id;
+        cmd.Parameters.Add(donor_id);
+
+        MySqlParameter patient_id = new MySqlParameter();
+        patient_id.ParameterName = "@PatientId";
+        patient_id.Value = newPatient.GetId();
+        cmd.Parameters.Add(patient_id);
+
+        cmd.ExecuteNonQuery();
+        conn.Close();
+        if (conn != null)
+        {
+            conn.Dispose();
+        }
+    }
+
+    public List<Patient> GetPatients()
+    {
+       MySqlConnection conn = DB.Connection();
+       conn.Open();
+       MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+       cmd.CommandText = @"SELECT patients.* FROM donors
+           JOIN patients_donors ON (donors.id = patients_donors.donor_id)
+           JOIN patients ON (patients_donors.patient_id = patients.id)
+           WHERE donors.id = @DonorId;";
+
+       MySqlParameter donorIdParameter = new MySqlParameter();
+       donorIdParameter.ParameterName = "@DonorId";
+       donorIdParameter.Value = _id;
+       cmd.Parameters.Add(donorIdParameter);
+
+       MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+       List<Patient> patients = new List<Patient>{};
+
+       while(rdr.Read())
+       {
+         int patientId = rdr.GetInt32(0);
+         string patientName = rdr.GetString(1);
+         string patientContact = rdr.GetString(2);
+         string patientDateOfBirth = rdr.GetString(3);
+         string patientBloodType = rdr.GetString(4);
+         string patientDs= rdr.GetString(5);
+         bool patientUrgent = rdr.GetBoolean(6);
+         bool patientNeedBlood = rdr.GetBoolean(7);
+
+         Patient newPatient = new Patient(patientName, patientContact, patientDateOfBirth, patientBloodType, patientDs, patientUrgent, patientNeedBlood, patientId);
+         patients.Add(newPatient);
+       }
+       conn.Close();
+       if (conn != null)
+       {
+           conn.Dispose();
+       }
+       return patients;
+     }
+
+    public static List<Donor> GetAll()
+    {
+        List<Donor> allDonors = new List<Donor> {};
+        MySqlConnection conn = DB.Connection();
+        conn.Open();
+        var cmd = conn.CreateCommand() as MySqlCommand;
+        cmd.CommandText = @"SELECT * FROM donors;";
+        var rdr = cmd.ExecuteReader() as MySqlDataReader;
+        while(rdr.Read())
+        {
+          int donorId = rdr.GetInt32(0);
+          string donorName = rdr.GetString(1);
+          string donorContact = rdr.GetString(2);
+          string donorDateOfBirth = rdr.GetString(3);
+          string donorBloodType = rdr.GetString(4);
+          string donorMedicalRecord = rdr.GetString(5);
+
+          Donor newDonor = new Donor(donorName, donorContact, donorDateOfBirth, donorBloodType, donorMedicalRecord, donorId);
+          allDonors.Add(newDonor);
+        }
+        conn.Close();
+        if (conn != null)
+        {
+            conn.Dispose();
+        }
+        return allDonors;
+    }
+    public static Donor Find(int id)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM donors WHERE id = (@searchId);";
+
+      MySqlParameter searchId = new MySqlParameter();
+      searchId.ParameterName = "@searchId";
+      searchId.Value = id;
+      cmd.Parameters.Add(searchId);
+
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      int donorId = 0;
+      string donorName = "";
+      string donorContact = "";
+      string donorDateOfBirth = "";
+      string donorBloodType = "";
+      string donorMedicalRecord = "";
+
+      while(rdr.Read())
+      {
+        donorId = rdr.GetInt32(0);
+        donorName = rdr.GetString(1);
+        donorContact = rdr.GetString(2);
+        donorDateOfBirth = rdr.GetString(3);
+        donorBloodType = rdr.GetString(4);
+        donorMedicalRecord = rdr.GetString(5);
+      }
+
+      Donor newDonor = new Donor(donorName, donorContact, donorDateOfBirth, donorBloodType, donorMedicalRecord, donorId);
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+
+      return newDonor;
+    }
+    public static void DeleteAll()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM donors;";
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+          conn.Dispose();
       }
     }
   }

@@ -1,7 +1,7 @@
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 
-namespace BloodBank.Models
+namespace BloodBankApp.Models
 {
     public class Program
     {

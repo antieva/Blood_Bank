@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
-using BloodBank.Models;
+using BloodBankApp.Models;
 using System;
 
-namespace BloodBank.Models
+namespace BloodBankApp.Models
 {
   public class BloodBank
     {
@@ -20,7 +20,7 @@ namespace BloodBank.Models
         _id = id;
       }
 
-      public override bool Equals(System.Object otherItem)
+      public override bool Equals(System.Object otherBloodBank)
         {
           if (!(otherBloodBank is BloodBank))
           {
@@ -28,7 +28,7 @@ namespace BloodBank.Models
           }
           else
           {
-             BloodBank newBloodBank = (BloodBank) otherDonor;
+             BloodBank newBloodBank = (BloodBank) otherBloodBank;
              bool idEquality = this.GetId() == newBloodBank.GetId();
              bool nameEquality = this.GetName() == newBloodBank.GetName();
              bool contactEquality = this.GetContact() == newBloodBank.GetContact();
@@ -77,11 +77,11 @@ namespace BloodBank.Models
           conn.Open();
 
           var cmd = conn.CreateCommand() as MySqlCommand;
-          cmd.CommandText = @"INSERT INTO bloodbanks (name, address, contact) VALUES (@name, @address, @contact);";
+          cmd.CommandText = @"INSERT INTO blood_banks (name, address, contact) VALUES (@name, @address, @contact);";
 
           MySqlParameter name = new MySqlParameter();
           name.ParameterName = "@name";
-          name.Value = this._name;contact
+          name.Value = this._name;
           cmd.Parameters.Add(name);
 
           MySqlParameter address = new MySqlParameter();
@@ -102,5 +102,81 @@ namespace BloodBank.Models
               conn.Dispose();
           }
         }
+      public static List<BloodBank> GetAll()
+      {
+          List<BloodBank> allBloodBanks = new List<BloodBank> {};
+          MySqlConnection conn = DB.Connection();
+          conn.Open();
+          var cmd = conn.CreateCommand() as MySqlCommand;
+          cmd.CommandText = @"SELECT * FROM blood_banks;";
+          var rdr = cmd.ExecuteReader() as MySqlDataReader;
+          while(rdr.Read())
+          {
+            int bloodbankId = rdr.GetInt32(0);
+            string bloodbankName = rdr.GetString(1);
+            string bloodbankAddress = rdr.GetString(2);
+            string bloodbankContact = rdr.GetString(3);
+
+            BloodBank newBloodBank = new BloodBank(bloodbankName, bloodbankAddress, bloodbankContact, bloodbankId);
+            allBloodBanks.Add(newBloodBank);
+          }
+          conn.Close();
+          if (conn != null)
+          {
+              conn.Dispose();
+          }
+          return allBloodBanks;
+      }
+
+      public static BloodBank Find(int id)
+      {
+        MySqlConnection conn = DB.Connection();
+        conn.Open();
+        var cmd = conn.CreateCommand() as MySqlCommand;
+        cmd.CommandText = @"SELECT * FROM blood_banks WHERE id = (@searchId);";
+
+        MySqlParameter searchId = new MySqlParameter();
+        searchId.ParameterName = "@searchId";
+        searchId.Value = id;
+        cmd.Parameters.Add(searchId);
+
+        var rdr = cmd.ExecuteReader() as MySqlDataReader;
+        int bloodbankId = 0;
+        string bloodbankName = "";
+        string bloodbankContact = "";
+        string bloodbankAddress = "";
+
+        while(rdr.Read())
+        {
+          bloodbankId = rdr.GetInt32(0);
+          bloodbankName = rdr.GetString(1);
+          bloodbankAddress = rdr.GetString(2);
+          bloodbankContact = rdr.GetString(3);
+        }
+
+        BloodBank newBloodBank = new BloodBank(bloodbankName, bloodbankAddress, bloodbankContact, bloodbankId);
+
+        conn.Close();
+        if (conn != null)
+        {
+          conn.Dispose();
+        }
+
+        return newBloodBank;
+      }
+      
+      public static void DeleteAll()
+      {
+          MySqlConnection conn = DB.Connection();
+          conn.Open();
+          var cmd = conn.CreateCommand() as MySqlCommand;
+          cmd.CommandText = @"DELETE FROM blood_banks;";
+          cmd.ExecuteNonQuery();
+          conn.Close();
+          if (conn != null)
+          {
+              conn.Dispose();
+          }
+      }
     }
 }

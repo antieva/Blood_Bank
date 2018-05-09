@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BloodBank.Models
+namespace BloodBankApp.Models
 {
     public class Startup
     {
@@ -41,6 +41,6 @@ namespace BloodBank.Models
     }
     public static class DBConfiguration
     {
-      public static string ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=bloodbank;";
+      public static string ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=blood_bank;";
     }
 }
