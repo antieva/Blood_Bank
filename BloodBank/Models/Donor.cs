@@ -197,7 +197,66 @@ namespace BloodBankApp.Models
        }
        return patients;
      }
+     public void AddBloodBank(BloodBank newBloodBank)
+     {
+         MySqlConnection conn = DB.Connection();
+         conn.Open();
+         var cmd = conn.CreateCommand() as MySqlCommand;
+         cmd.CommandText = @"INSERT INTO donors_bloodbanks (bloodBank_id, donor_id) VALUES (@BloodBankId, @DonorId);";
 
+         MySqlParameter bloodBank_id = new MySqlParameter();
+         bloodBank_id.ParameterName = "@BloodBankId";
+         bloodBank_id.Value = newBloodBank.GetId();
+         cmd.Parameters.Add(bloodBank_id);
+
+         MySqlParameter donor_id = new MySqlParameter();
+         donor_id.ParameterName = "@DonorId";
+         donor_id.Value = _id;
+         cmd.Parameters.Add(donor_id);
+
+         cmd.ExecuteNonQuery();
+         conn.Close();
+         if (conn != null)
+         {
+             conn.Dispose();
+         }
+     }
+
+     public List<BloodBank> GetBloodBanks()
+     {
+        MySqlConnection conn = DB.Connection();
+        conn.Open();
+        MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+        cmd.CommandText = @"SELECT blood_banks.* FROM donors
+            JOIN donors_bloodBanks ON (blood_banks.id = donors_bloodBanks.bloodBanks_id)
+            JOIN blood_banks ON (donors_bloodBanks.donor_id = donors.id)
+            WHERE donors.id = @DonorId;";
+
+        MySqlParameter donorIdParameter = new MySqlParameter();
+        donorIdParameter.ParameterName = "@DonorId";
+        donorIdParameter.Value = _id;
+        cmd.Parameters.Add(donorIdParameter);
+
+        MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+        List<BloodBank> bloodBanks = new List<BloodBank>{};
+
+        while(rdr.Read())
+        {
+          int bloodBankId = rdr.GetInt32(0);
+          string bloodBankName = rdr.GetString(1);
+          string bloodBankAddress = rdr.GetString(3);
+          string bloodBankContact = rdr.GetString(2);
+
+          BloodBank newBloodBank = new BloodBank(bloodBankName, bloodBankAddress, bloodBankContact, bloodBankId);
+          bloodBanks.Add(newBloodBank);
+        }
+        conn.Close();
+        if (conn != null)
+        {
+            conn.Dispose();
+        }
+        return bloodBanks;
+    }
     public static List<Donor> GetAll()
     {
         List<Donor> allDonors = new List<Donor> {};
@@ -265,6 +324,7 @@ namespace BloodBankApp.Models
 
       return newDonor;
     }
+
     public static void DeleteAll()
     {
       MySqlConnection conn = DB.Connection();
