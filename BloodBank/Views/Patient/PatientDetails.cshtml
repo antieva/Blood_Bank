@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+  <link rel="stylesheet" type="text/css" href="~/css/styles.css" />
+  <meta charset="utf-8">
+  <title>Blood Banks</title>
+</head>
+  <body>
+    <header>
+      <h1>Blood Bank Match Application</h1>
+    </header>
+    <div class="container">
+      <nav>
+        <a href="/home">Home</a> |
+        <a href="/patients/list">Back to Patient List</a> |
+        <a href="/donors/list">Donors</a> |
+        <a href="/bloodbanks/list">Blood Banks</a>
+      </nav>
+      <h2>Patient Details</h2>
+        <p>Name: @Model.GetName()</p>
+        <p>Contact: @Model.GetContact()</p>
+        <p>DB: @Model.GetDateOfBirth()</p>
+        <p>Diagnosis: @Model.GetDiagnosis()</p>
+        <p>Blood Type: @Model.GetBloodType()</p>
+        @if (@Model.GetUrgent())
+        {
+          <p><span class="red">Need urgent transfusion</span></p>
+        }
+        @if (@Model.GetNeedBlood())
+        {
+          <p><span class="red">Need Blood</span></p>
+        }
+      <form action="/patient/@Model.GetId()/donors/match" method="get">
+        <button type="submit" class="btn btn-primary">Find match</button>
+      </form>
+      <br>
+      <form action="patient/@Model.GetId()/delete" method="post">
+        <button type="submit" class="btn btn-danger">Delete Patient</button>
+      </form>
+    </div>
+  </body>
+</html>

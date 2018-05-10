@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+    <link rel="stylesheet" type="text/css" href="~/css/styles.css" />
+    <meta charset="utf-8">
+    <title>Blood Banks</title>
+  </head>
+  <body>
+    <header>
+      <h1>Blood Bank Match Application</h1>
+    </header>
+  </body>
+    <div class="container">
+      <nav>
+        <a href="/home">Home</a> |
+        <a href="/patients/list">Patients</a> |
+        <a href="/donors/new">Add Donor</a> |
+        <a href="/bloodbanks/list">Blood Banks</a>
+      </nav>
+      @if (@Model.Count == 0)
+      {
+        <p><span class="red">No donors matches your search</span></p>
+      } else
+      {
+        <h2>Found Donors:</h2>
+        <ul>
+          @foreach (var donor in @Model)
+          {
+            <li><a href="/donor/@donor.GetId()/details">@donor.GetName()</a></li>
+          }
+        </ul>
+      }
+    </div>
+  </body>
+</html>

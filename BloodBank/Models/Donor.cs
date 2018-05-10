@@ -228,8 +228,8 @@ namespace BloodBankApp.Models
         conn.Open();
         MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
         cmd.CommandText = @"SELECT blood_banks.* FROM donors
-            JOIN donors_bloodBanks ON (blood_banks.id = donors_bloodBanks.bloodBanks_id)
-            JOIN blood_banks ON (donors_bloodBanks.donor_id = donors.id)
+            JOIN donors_bloodBanks ON (donors.id = donors_bloodBanks.donor_id)
+            JOIN blood_banks ON (donors_bloodBanks.bloodBank_id = blood_banks.id)
             WHERE donors.id = @DonorId;";
 
         MySqlParameter donorIdParameter = new MySqlParameter();
@@ -323,6 +323,66 @@ namespace BloodBankApp.Models
       }
 
       return newDonor;
+    }
+    public static List<Donor> Find(string bloodType)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM donors WHERE bloodType = (@searchBloodType);";
+
+      MySqlParameter searchBloodType = new MySqlParameter();
+      searchBloodType.ParameterName = "@searchBloodType";
+      searchBloodType.Value = bloodType;
+      cmd.Parameters.Add(searchBloodType);
+
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      int donorId = 0;
+      string donorName = "";
+      string donorContact = "";
+      string donorDateOfBirth = "";
+      string donorBloodType = "";
+      string donorMedicalRecord = "";
+      List<Donor> donors = new List<Donor>{};
+
+      while(rdr.Read())
+      {
+        donorId = rdr.GetInt32(0);
+        donorName = rdr.GetString(1);
+        donorContact = rdr.GetString(2);
+        donorDateOfBirth = rdr.GetString(3);
+        donorBloodType = rdr.GetString(4);
+        donorMedicalRecord = rdr.GetString(5);
+
+        Donor newDonor = new Donor(donorName, donorContact, donorDateOfBirth, donorBloodType, donorMedicalRecord, donorId);
+        donors.Add(newDonor);
+      }
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+
+      return donors;
+    }
+    public void Delete()
+    {
+        MySqlConnection conn = DB.Connection();
+        conn.Open();
+        var cmd = conn.CreateCommand() as MySqlCommand;
+        cmd.CommandText = @"DELETE FROM donors WHERE id = @DonorId; DELETE FROM patients_donors WHERE donor_id = @DonorId;";
+
+        MySqlParameter donorIdParameter = new MySqlParameter();
+        donorIdParameter.ParameterName = "@DonorId";
+        donorIdParameter.Value = this.GetId();
+        cmd.Parameters.Add(donorIdParameter);
+
+        cmd.ExecuteNonQuery();
+        if (conn != null)
+        {
+            conn.Close();
+        }
     }
 
     public static void DeleteAll()

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+    <link rel="stylesheet" type="text/css" href="~/css/styles.css" />
+    <meta charset="utf-8">
+    <title>Blood Banks</title>
+  </head>
+  <body>
+    <header>
+      <h1>Blood Bank Match Application</h1>
+    </header>
+    <div class="container">
+      <nav>
+        <a href="/patients/list">Patients</a> |
+        <a href="/donors/list">Donors</a> |
+        <a href="/bloodbanks/list">Blood Banks</a>
+      </nav>
+      <div class="row">
+        <div class="col-md-6">
+          <form class="patientForm" action="/patients/search" method="post">
+            <div class='form-group'>
+              <label class= "searchLabel" for='searchPatients'>Find patient by name</label>
+              <input name='searchPatients' class='form-control width' type='text' value = "Patient Name">
+            </div>
+            <button type='submit' class='btn btn-primary'>Submit</button>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <form class="donorForm" action="/donors/list" method="post">
+            <div class='form-group'>
+              <label class= "searchLabel" for='searchDonors'>Find donors by blood type</label>
+              <select class="selectBar" name="searchDonors">
+               <option value="0+">0+</option>
+               <option value="0-">0-</option>
+               <option value="A+">A+</option>
+               <option value="A-">A-</option>
+               <option value="B+">B+</option>
+               <option value="B-">B-</option>
+               <option value="AB+">AB+</option>
+               <option value="AB-">AB-</option>
+              </select>
+            </div>
+            <button type='submit' class='btn btn-primary'>Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

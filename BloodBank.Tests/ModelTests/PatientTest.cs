@@ -78,6 +78,25 @@ namespace BloodBankApp.Tests
     }
 
     [TestMethod]
+    public void Find_PatientName_True()
+    {
+        //Arrange
+        Patient firstPatient = new Patient("Tim", "9999999", "03/05/75", "IIRh-", "Ds");
+        firstPatient.Save();
+        Patient secondPatient = new Patient("Tim", "888888", "07/10/85", "0+", "Ds");
+        secondPatient.Save();
+
+        //Act
+        List<Patient> testList = new List<Patient> {};
+        testList.Add(firstPatient);
+        testList.Add(secondPatient);
+        List<Patient> result = Patient.Find("Tim");
+
+        //Assert
+        CollectionAssert.AreEqual(testList, result);
+    }
+
+    [TestMethod]
     public void Delete_DeletesPatientAssociationsFromDatabase_PatientList()
     {
       //Arrange

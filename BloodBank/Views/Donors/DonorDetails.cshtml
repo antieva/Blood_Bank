@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+  <link rel="stylesheet" type="text/css" href="~/css/styles.css" />
+  <meta charset="utf-8">
+  <title>Blood Banks</title>
+</head>
+  <body>
+    <header>
+      <h1>Blood Bank Match Application</h1>
+    </header>
+    <div class="container">
+      <nav>
+        <a href="/home">Home</a> |
+        <a href="/patients/list">Patients</a> |
+        <a href="/donors/list">Donors</a> |
+        <a href="/bloodbanks/list">Blood Banks</a>
+      </nav>
+      <h2>Donor Details</h2>
+        <p>Name: @Model.GetName()</p>
+        <p>Contact: @Model.GetContact()</p>
+        <p>DB: @Model.GetDateOfBirth()</p>
+        <p>Medical Record: @Model.GetMedicalRecord()</p>
+        <p>Blood Type: @Model.GetBloodType()</p>
+        <p>Blood Bank:
+        @foreach (var bb in @Model.GetBloodBanks())
+        {
+          <a href="bb/@bb.GetId()/details">@bb.GetName()</a>
+        }
+      <br>
+      <form action="/@Model.GetId()/delete" method="post">
+        <button type="submit" class="btn btn-danger">Delete Donor</button>
+      </form>
+    </div>
+  </body>
+</html>

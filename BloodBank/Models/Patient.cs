@@ -298,6 +298,52 @@ namespace BloodBankApp.Models
 
         return newPatient;
       }
+      public static List<Patient> Find(string name)
+      {
+        MySqlConnection conn = DB.Connection();
+        conn.Open();
+        var cmd = conn.CreateCommand() as MySqlCommand;
+        cmd.CommandText = @"SELECT * FROM patients WHERE name = (@searchName);";
+
+        MySqlParameter searchName = new MySqlParameter();
+        searchName.ParameterName = "@searchName";
+        searchName.Value = name;
+        cmd.Parameters.Add(searchName);
+
+        var rdr = cmd.ExecuteReader() as MySqlDataReader;
+        int patientId = 0;
+        string patientName = "";
+        string patientContact = "";
+        string patientDateOfBirth = "";
+        string patientBloodType = "";
+        string patientDiagnosis = "";
+        bool patientUrgent = true;
+        bool patientNeedBlood = true;
+        List<Patient> patients = new List<Patient>{};
+
+        while(rdr.Read())
+        {
+          patientId = rdr.GetInt32(0);
+          patientName = rdr.GetString(1);
+          patientContact = rdr.GetString(2);
+          patientDateOfBirth = rdr.GetString(3);
+          patientBloodType = rdr.GetString(4);
+          patientDiagnosis = rdr.GetString(5);
+          patientUrgent = rdr.GetBoolean(6);
+          patientNeedBlood = rdr.GetBoolean(7);
+
+          Patient newPatient = new Patient(patientName, patientContact, patientDateOfBirth, patientBloodType, patientDiagnosis, patientUrgent, patientNeedBlood, patientId);
+          patients.Add(newPatient);
+        }
+
+        conn.Close();
+        if (conn != null)
+        {
+          conn.Dispose();
+        }
+
+        return patients;
+      }
       public void Delete()
       {
           MySqlConnection conn = DB.Connection();
