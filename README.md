@@ -6,14 +6,14 @@
 
 ## Description
 
-_Bloodbank is a web site created to coordinate work of bloodbanks.
-As a Bloodbank employee, you can add/delete donors and patients to the database.
-As a Bloodbank employee, you can list all donors or patients added to the database. 
-As a Bloodbank employee, you can see every donors/patients ditails. 
-As a Bloodbank employee, you can find donors by blood type or name.
-As a Bloodbank employee, you can find patients by name or ergancy of blood transfusion.
-As a Bloodbank employee, you can find all matching donors for particular patient.
-As a Bloodbank employee, you can update particular donor/patient details._ 
+_Bloodbank is a web site created to coordinate work of bloodbanks._
+_As a Bloodbank employee, you can add/delete donors and patients to the database._
+_As a Bloodbank employee, you can list all donors or patients added to the database._ 
+_As a Bloodbank employee, you can see every donors/patients ditails._ 
+_As a Bloodbank employee, you can find donors by blood type or name._
+_As a Bloodbank employee, you can find patients by name or ergancy of blood transfusion._
+_As a Bloodbank employee, you can find all matching donors for particular patient._
+_As a Bloodbank employee, you can update particular donor/patient details._ 
 
 
 ## Setup/Installation Requirements
