@@ -1,6 +1,6 @@
 # _Bloodbank_
 
-#### _Bloodbank, 05/17/18_
+#### _Bloodbank, 05/10/18_
 
 #### By _**Eva Antipina**_
 
@@ -30,14 +30,17 @@ _Bloodbank is a web site created to coordinate work of bloodbanks._
 
 # Add Database to the Project
 
-* _> CREATE DATABASE messenger;_
-* _> USE messenger;_
+* _> CREATE DATABASE bloodbank;_
+* _> USE blaoodbank;_
 * _> CREATE TABLE blood_banks (id serial PRIMARY KEY, name VARCHAR(255), address VARCHAR(255), contact VARCHAR(255));_
-* _> CREATE TABLE message (id serial PRIMARY KEY, text VARCHAR(255), fromUserId VARCHAR(255), toUserId VARCHAR(255), seen BIT(1));_
+* _> CREATE TABLE donors (id serial PRIMARY KEY, name VARCHAR(255), contact VARCHAR(255), dateOfBirth VARCHAR(255), bloodType VARCHAR(255), medicalRecord VARCHAR(255));_
+* _> CREATE TABLE patients (id serial PRIMARY KEY, name VARCHAR(255), contact VARCHAR(255), dateOfBirth VARCHAR(255), bloodType VARCHAR(255), ds VARCHAR(255), urgent TINYINT(1), needblood TINYINT(1);_
+* _> CREATE TABLE patients_donors (id serial PRIMARY KEY, donor_id VARCHAR(255), patient_id VARCHAR(255));_
+* _> CREATE TABLE donors_bloodbanks (id serial PRIMARY KEY, bloodBank_id VARCHAR(255), donor_id VARCHAR(255));_
 
 ## Known Bugs
 
-_None._
+_Project not finished._
 
 ## Support and contact details
 
@@ -45,7 +48,7 @@ _If You run into any issues or have questions, ideas, concerns or would like to 
 
 ## Technologies Used
 
-_.Net, C#, HTML, Bootstrap_
+_.Net, MySQL, MAMP, C#, HTML, Bootstrap_
 
 ### License
 
