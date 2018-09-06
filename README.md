@@ -1,6 +1,6 @@
-# _Messenger App_
+# _Bloodbank_
 
-#### _Messenger, 05/17/18_
+#### _Bloodbank, 05/17/18_
 
 #### By _**Eva Antipina**_
 
@@ -32,7 +32,7 @@ _Bloodbank is a web site created to coordinate work of bloodbanks._
 
 * _> CREATE DATABASE messenger;_
 * _> USE messenger;_
-* _> CREATE TABLE users (id serial PRIMARY KEY, name VARCHAR(255), password VARCHAR(255));_
+* _> CREATE TABLE blood_banks (id serial PRIMARY KEY, name VARCHAR(255), address VARCHAR(255), contact VARCHAR(255));_
 * _> CREATE TABLE message (id serial PRIMARY KEY, text VARCHAR(255), fromUserId VARCHAR(255), toUserId VARCHAR(255), seen BIT(1));_
 
 ## Known Bugs
@@ -41,7 +41,7 @@ _None._
 
 ## Support and contact details
 
-_If You run into any issues or have questions, ideas, concerns or would like to make a contribution to the code, please contact me via email: eva.antipina@gmail.com, vernajs@gmail.com, dennise.i.ortega@gmail.com, palowskijim@gmail.com _
+_If You run into any issues or have questions, ideas, concerns or would like to make a contribution to the code, please contact me via email: eva.antipina@gmail.com_
 
 ## Technologies Used
 
